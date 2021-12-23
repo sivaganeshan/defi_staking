@@ -86,13 +86,79 @@ describe("Token farming tests", async()=>{
         //1.investor balance reduced from staking value 
         // expect(format(await provider.getBalance(investor1.address))).to.lessThan('9998.5');
         //2.Eth balance in contract is increased by staking value
-        expect(format(await tokenFarming.connect(investor1).balanceOfEthStaked())).to.equal('1.5');
+        expect(format(await tokenFarming.balanceOfEthStaked())).to.equal('1.5');
         //3.Check user staked status 
         expect(await tokenFarming.connect(investor1).isUserStaked()).to.equal(true);
         //4.check eth staked value by investor
         expect(format(await tokenFarming.connect(investor1).getEthStaked())).to.equal('1.5');
         //5.Check rone staked value stayed same
         expect(format(await tokenFarming.connect(investor1).getRoneStaked())).to.equal('0.0');
+
+      })
+
+      it("Eth staking, multiple ETH and Rone staking and verify the staking balance and investor balance", async()=>{
+
+        let ethToStake = tokens('2.5');
+
+        await tokenFarming.connect(investor2).StakeEth({value:ethToStake});
+        //1.investor balance reduced from staking value 
+        // expect(format(await provider.getBalance(investor1.address))).to.lessThan('9998.5');
+        //2.Eth balance in contract is increased by staking value
+        expect(format(await tokenFarming.balanceOfEthStaked())).to.equal('2.5');
+        //3.Check user staked status 
+        expect(await tokenFarming.connect(investor2).isUserStaked()).to.equal(true);
+        //4.check eth staked value by investor
+        expect(format(await tokenFarming.connect(investor2).getEthStaked())).to.equal('2.5');
+        //5.Check rone staked value stayed same
+        expect(format(await tokenFarming.connect(investor2).getRoneStaked())).to.equal('0.0');
+
+        expect(await tokenFarming.connect(investor1).isUserStaked()).to.equal(false);
+
+        ethToStake = tokens('0.5');
+
+        await tokenFarming.connect(investor1).StakeEth({value:ethToStake});
+        //1.investor balance reduced from staking value 
+        // expect(format(await provider.getBalance(investor1.address))).to.lessThan('9998.5');
+        //2.Eth balance in contract is increased by staking value
+        expect(format(await tokenFarming.balanceOfEthStaked())).to.equal('3.0');
+        //3.Check user staked status 
+        expect(await tokenFarming.connect(investor1).isUserStaked()).to.equal(true);
+        //4.check eth staked value by investor
+        expect(format(await tokenFarming.connect(investor1).getEthStaked())).to.equal('0.5');
+        //5.Check rone staked value stayed same
+        expect(format(await tokenFarming.connect(investor1).getRoneStaked())).to.equal('0.0');
+
+        let roneStake = tokens('110');
+        //provide approval 
+        await rewardToken.connect(investor1).approve(tokenFarming.address, roneStake);
+        //stake
+        await tokenFarming.connect(investor1).StakeRone(roneStake);
+        //1.investor balance reduced from staking value 
+        expect(format( await rewardToken.balanceOf(investor1.address))).to.equal('1890.0');
+        //2.Rone balance in contract is increased by staking value
+        expect(format(await tokenFarming.balanceOfRoneStaked())).to.equal('110.0');
+        //3.Check user staked status 
+        expect(await tokenFarming.connect(investor1).isUserStaked()).to.equal(true);
+        //4.check Rone staked value by investor
+        expect(format(await tokenFarming.connect(investor1).getEthStaked())).to.equal('0.5');
+        //5.Check rone staked value stayed same
+        expect(format(await tokenFarming.connect(investor1).getRoneStaked())).to.equal('110.0');
+
+        roneStake = tokens('1100');
+        //provide approval 
+        await rewardToken.connect(investor2).approve(tokenFarming.address, roneStake);
+        //stake
+        await tokenFarming.connect(investor2).StakeRone(roneStake);
+        //1.investor balance reduced from staking value 
+        expect(format( await rewardToken.balanceOf(investor2.address))).to.equal('900.0');
+        //2.Rone balance in contract is increased by staking value
+        expect(format(await tokenFarming.balanceOfRoneStaked())).to.equal('1210.0');
+        //3.Check user staked status 
+        expect(await tokenFarming.connect(investor2).isUserStaked()).to.equal(true);
+        //4.check Rone staked value by investor
+        expect(format(await tokenFarming.connect(investor2).getEthStaked())).to.equal('2.5');
+        //5.Check rone staked value stayed same
+        expect(format(await tokenFarming.connect(investor2).getRoneStaked())).to.equal('1100.0');
 
       })
 })
