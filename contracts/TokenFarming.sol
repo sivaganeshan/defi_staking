@@ -166,6 +166,14 @@ contract TokenFarming {
         return userDetails[msg.sender].roneRewardsWithdrawn;
     }
 
+    function getEthStaked() public view returns(uint256) {
+        return userDetails[msg.sender].ethStaked;
+    }
+
+    function getRoneStaked() public view returns (uint256) {
+        return userDetails[msg.sender].roneStaked;   
+    }
+
     function calculateAndDistributeRewards() public {
         require(msg.sender == admin, "only admins can distribute awards");
 
