@@ -4,8 +4,8 @@ import "./RewardTokenOne.sol";
 
 contract TokenFarming {
     string public name = "StakingDemoRinkeby";
-    uint256 public ethRewardPerToken = 4;
-    uint256 public roneRewardPerToken = 10;
+    uint256 public ethRewardPerToken = 15;
+    uint256 public roneRewardPerToken = 4;
     uint256 public minimumEthToStake = 0.1 ether;
     uint256 public minimumRoneToStake = 100 ether;
 
@@ -189,7 +189,7 @@ contract TokenFarming {
                         ethRewardPerToken *
                         (block.timestamp -
                             userDetails[stakers[i]].lastUpdateDate)) /
-                        31556926);
+                        3155692600);
                     userDetails[stakers[i]].ethRewardsAccumulated =
                         userDetails[stakers[i]].ethRewardsAccumulated +
                         currentEthReward;
@@ -198,10 +198,10 @@ contract TokenFarming {
                 if (userDetails[stakers[i]].roneStaked > 0) {
                     uint256 currentRoneReward = ((userDetails[stakers[i]]
                         .roneStaked *
-                        ethRewardPerToken *
+                        roneRewardPerToken *
                         (block.timestamp -
                             userDetails[stakers[i]].lastUpdateDate)) /
-                        31556926);
+                        3155692600);
                     userDetails[stakers[i]].roneRewardsAccumulated =
                         userDetails[stakers[i]].roneRewardsAccumulated +
                         currentRoneReward;

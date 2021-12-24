@@ -185,8 +185,8 @@
       ]
     },
     "/Users/sivaganeshanb/Desktop/Ethereum/hardhat_tutorial/contracts/TokenFarming.sol": {
-      "lastModificationDate": 1640257438215,
-      "contentHash": "8ea0fbce30d0d20d340fd228f0b5e155",
+      "lastModificationDate": 1640316613111,
+      "contentHash": "7e543e8e62ff19f764bbc6d740e890a4",
       "sourceName": "contracts/TokenFarming.sol",
       "solcConfig": {
         "version": "0.8.4",
