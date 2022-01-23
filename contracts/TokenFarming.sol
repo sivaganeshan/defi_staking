@@ -108,17 +108,20 @@ contract TokenFarming {
             "user haven't staked Eth with us !!!"
         );
 
-        // Transfer balance back to the user
-        (bool sent, ) = msg.sender.call{
-            value: userDetails[msg.sender].ethStaked
-        }("");
-        require(sent, "Failed to send user balance back to the user");
+       
+        
         uint256 unStakingAmount = userDetails[msg.sender].ethStaked;
         userDetails[msg.sender].ethStaked = 0;
         if (!(userDetails[msg.sender].roneStaked > 0)) {
             userDetails[msg.sender].isStaked = false;
         }
         balanceOfEthStaked = balanceOfEthStaked - unStakingAmount;
+         // Transfer balance back to the user // also use open zeplin address
+         //use , payable(address).transfer( userDetails[msg.sender].ethStaked);
+        (bool sent, ) = msg.sender.call{
+            value: userDetails[msg.sender].ethStaked
+        }("");
+        require(sent, "Failed to send user balance back to the user");
         emit Unstake(msg.sender, unStakingAmount, "Eth UnStaked");
     }
 
@@ -132,17 +135,20 @@ contract TokenFarming {
             "user haven't staked Eth with us !!!"
         );
 
-        //if valid transfer from smart contract to sender
-        _rewardTokenOne.transfer(
-            msg.sender,
-            userDetails[msg.sender].roneStaked
-        );
+       
         uint256 unStakingAmount = userDetails[msg.sender].roneStaked;
         userDetails[msg.sender].roneStaked = 0;
         if (!(userDetails[msg.sender].ethStaked > 0)) {
             userDetails[msg.sender].isStaked = false;
         }
         balanceOfRoneStaked = balanceOfRoneStaked - unStakingAmount;
+        
+         //if valid transfer from smart contract to sender
+        _rewardTokenOne.transfer(
+            msg.sender,
+            userDetails[msg.sender].roneStaked
+        );
+        
         emit Unstake(msg.sender, unStakingAmount, "Rone UnStaked");
     }
 
